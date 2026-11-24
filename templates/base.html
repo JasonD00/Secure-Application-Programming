@@ -1,0 +1,18 @@
+ <!-- Adapted from Flask Static Files Documentation:
+      https://flask.palletsprojects.com/en/stable/tutorial/static/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Notes Board</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+        <nav>
+            <a href="{{ url_for('board') }}">Board</a>
+        </nav>
+        {% block content %}{% endblock %}
+    </body>
+</html>
