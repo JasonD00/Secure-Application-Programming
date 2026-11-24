@@ -1,0 +1,84 @@
+body { 
+    font-family: Arial, sans-serif; 
+    max-width: 760px; 
+    margin: 0 auto; 
+    padding: 1rem; 
+    color: #222; 
+}
+
+nav { 
+    display: flex; 
+    gap: 1rem; 
+    flex-wrap: wrap; 
+    padding-bottom: .75rem; 
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem; 
+}
+
+nav a { 
+    text-decoration: none; 
+    color: #1f3864; 
+    font-weight: bold; 
+}
+
+form { 
+    margin: 1rem 0; 
+}
+
+label { 
+    display: block; 
+    margin-top: .5rem; 
+}
+
+input[type=text], input[type=password], input[type=email], 
+textarea { 
+    width: 100%; 
+    padding: .4rem; 
+    box-sizing: border-box; 
+}
+
+button { 
+    margin-top: .75rem; 
+    padding: .45rem 1rem; 
+    cursor: pointer; 
+}
+
+.flash { 
+    padding: .5rem .75rem;
+    margin: .5rem 0; 
+    border-radius: 4px; 
+    background: #e8edf5; 
+}
+
+.flash.error { 
+    background: #fde8e8; 
+}
+
+.post { 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    padding: .6rem .8rem; 
+    margin: .6rem 0; 
+}
+
+.post small { 
+    color: #666; 
+}
+
+table { 
+    border-collapse: collapse; 
+    width: 100%; 
+}
+
+td, th { 
+    border: 1px solid #ccc; 
+    padding: .4rem; 
+    text-align: left; 
+}
+
+pre { 
+    background: #f4f4f4; 
+    padding: .6rem; 
+    overflow-x: auto; 
+    white-space: pre-wrap; 
+}
