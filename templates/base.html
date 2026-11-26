@@ -15,12 +15,19 @@
     <body>
         <nav>
             <a href="{{ url_for('board') }}">Board</a>
+            {% if session.get('user_id') %}
+            <span>Signed in as: {{session.get('username') }}</span>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
             <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        
         </nav>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
-                <div class="flash {{ caetgory }}">{{ message }}</div>
+                <div class="flash {{ category }}">{{ message }}</div>
             {% endfor %}
         {% endwith %}
 
