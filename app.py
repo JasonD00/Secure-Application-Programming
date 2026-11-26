@@ -1,10 +1,10 @@
 
 import os
-from flask import Flask, render_template, redirect, flash, request, url_for
+from flask import Flask, render_template, redirect, flash, request, session, url_for
 import db
 import sqlite3
 import secrets
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Reference for form handeling using flash:
 # https://flask.palletsprojects.com/en/stable/patterns/flashing/
@@ -12,6 +12,8 @@ from werkzeug.security import generate_password_hash
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev_only_change_me")
 app.teardown_appcontext(db.close_db)
+
+
 
 # Routing to the Home page
 @app.route("/")
@@ -57,11 +59,43 @@ def register():
             flash("Username already in use.")   
             return render_template("register.html") # render the template 
 
-        # if successfull show message and redirect to "board"
-        flash("Account Created.")
-        return redirect(url_for("board"))
+        # if successfull show message and redirect to "board"\ chanegd to login on sucess 
+        flash("Account Created. You can now log in")
+        return redirect(url_for("login"))
 
     return render_template("register.html")
+
+# Routing for login
+@app.route("/login", methods =["GET", "POST"])
+def login():
+    if request.method == "POST": # if the request is POST
+        # get the username and password from the form
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
+
+        # user query = select all columns from users where the username = the username, find a match
+        user = db.get_db().execute(
+            "SELECT * FROM users WHERE username = ?", (username,)
+        ).fetchone()
+
+        # if the user is found and password match is verified
+        if user and check_password_hash(user["password"], password):
+            session.clear() # clear current session
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            session["is_admin"] = bool(user["is_admin"])
+            flash("Logged in.")
+            return redirect(url_for("board"))
+
+        flash("Wrong username or password.")
+    return render_template("login.html")
+
+# Routing logout for users 
+@app.route("/logout")
+def logout():
+    session.clear() # clear session
+    return redirect(url_for("board")) # return to board
+
 
 if __name__ == "__main__":
     if not os.path.exists(db.DB_PATH):
