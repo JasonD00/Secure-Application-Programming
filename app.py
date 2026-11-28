@@ -16,8 +16,28 @@ app.teardown_appcontext(db.close_db)
 
 
 # Routing to the Home page
-@app.route("/")
+@app.route("/", methods =["GET", "POST"])
 def board():
+    conn = db.get_db()
+
+    # if the method is POST then
+    if request.method == "POST":
+        if not session.get("user_id"): # if the user is not logged in
+            flash("Please log in to post again.")
+            return redirect(url_for("login")) # redirect
+
+        # get from form
+        content = request.form.get("content", "").strip()
+        if content:
+            conn.execute(
+                # insert new record: user_id, content and tiemstamp
+                "INSERT INTO posts (user_id, content, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)",
+                (session["user_id"], content)
+            )
+            conn.commit() # commit changes 
+        return redirect(url_for("board"))
+        
+
     posts = db.get_db().execute( # connect to the database
         # fetch post content, whe its creatde and the username
         "SELECT posts.content, posts.created_at, users.username "

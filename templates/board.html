@@ -7,6 +7,16 @@
 {% block content %}
 <h1>Notes Board</h1>
 
+{% if session.get('user_id') %}
+<form method="post" action="{{ url_for('board') }}">
+<label for="content">Make a post</label>
+<textarea id="content" name="content" rows="3" required></textarea>
+<button type="submit">Postt</button>
+</form>
+{% else %}
+<p>Notice: <a href="{{ url_for('login') }}">log in</a> to post a note</p>
+{% endif %}
+
 {% for post in posts %}
 <div class="post">
   <div>{{ post.content }}</div>
